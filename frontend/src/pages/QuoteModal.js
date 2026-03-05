@@ -20,35 +20,109 @@ export default function QuoteModal({ isOpen, onClose }) {
     formState: { errors },
     watch,
     reset,
+    getValues,
   } = useForm();
 
   const typeRequete = watch("typeRequete");
   const message = watch("message");
 
   const [captchaValue, setCaptchaValue] = useState(null);
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [savedEmail, setSavedEmail] = useState("");
+
   const validateAtLeastOne = () => {
-    if (!typeRequete && !message) {
-      return "Veuillez remplir au moins le type de demande ou le message";
-    }
-    return true;
-  };
+  const values = getValues(); // récupère toutes les valeurs du formulaire
+  if (!values.typeRequete && !values.message) {
+    return "Veuillez remplir au moins le type de demande ou le message";
+  }
+  return true;
+};
 
   if (!isOpen) return null;
 
  
   
-  const onSubmit = (data) => {
-   if (!captchaValue) {
+ const onSubmit = async (data) => {
+  if (!captchaValue) {
     alert("Veuillez confirmer que vous n'êtes pas un robot.");
     return;
-   }
+  }
 
-   console.log("Form Data:", data);
-   alert("Demande envoyée avec succès !");
-   reset();
-   setCaptchaValue(null);
-   onClose();
-  };
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/formulaire", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        nomPrenom: data.nomPrenom,
+        entreprise: data.entreprise,
+        email: data.email,
+        fonction: data.fonction,
+        telephone: data.telephone,
+        typeRequete: data.typeRequete,
+        message: data.message,
+        acceptPolitique: data.acceptPolitique ? true : false,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      setShowCodeInput(true);      // 🔥 afficher champ code
+      setSavedEmail(data.email);   // 🔥 sauvegarder email
+      alert("Un code de confirmation a été envoyé à votre email.");
+    } else {
+      alert("Erreur : " + result.message);
+    }
+  } catch (error) {
+    console.error("Erreur:", error);
+    alert("Une erreur est survenue.");
+  }
+};
+  
+  const handleVerifyCode = async () => {
+  try {
+    const response = await fetch("http://127.0.0.1:8000/api/verifier-code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: savedEmail,
+        code: verificationCode,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert("Email confirmé avec succès !");
+      alert("Ton formulaire a ete envoyer avec succes");
+      reset();
+      setCaptchaValue(null);
+      setShowCodeInput(false);
+      setVerificationCode("");
+      onClose();
+    } else {
+      alert(result.message);
+    }
+  } catch (error) {
+    console.error("Erreur:", error);
+    alert("Erreur lors de la vérification.");
+  }
+};
+
+const handleClose = () => {
+  reset();                // Vide tous les champs du formulaire
+  setCaptchaValue(null);   // Réinitialise le captcha
+  setShowCodeInput(false); // Cache le champ code
+  setVerificationCode(""); // Vide le code
+  setSavedEmail("");       // Vide l’email sauvegardé
+  onClose();               // Ferme le modal
+};
+
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-start justify-center pt-10 pb-10 z-50 overflow-y-auto">
@@ -56,7 +130,7 @@ export default function QuoteModal({ isOpen, onClose }) {
         {/* Header */}
         <div className="bg-red-600 text-white px-6 py-4 flex justify-between items-center rounded-t-lg">
           <h3 className="text-lg font-bold">Demande de devis</h3>
-          <button onClick={onClose} className="text-white text-xl font-bold hover:opacity-70">
+          <button onClick={handleClose} className="text-white text-xl font-bold hover:opacity-70">
             ✕
           </button>
         </div>
@@ -74,7 +148,14 @@ export default function QuoteModal({ isOpen, onClose }) {
             <input
              type="text"
              placeholder="Votre nom et prénom"
-             {...register("nomPrenom", { required: "Ce champ est obligatoire" })}
+             {...register("nomPrenom", { 
+    required: "Ce champ est obligatoire",
+    validate: value => {
+        // On coupe le texte par espaces, et on garde les mots non vides
+        const mots = value.trim().split(/\s+/);
+        return mots.length >= 2 || "Veuillez entrer au moins un nom et un prénom";
+    }
+})}
              className="mt-1 w-full border border-gray-300 rounded-lg p-2"
             />
              {errors.nomPrenom && (
@@ -103,7 +184,14 @@ export default function QuoteModal({ isOpen, onClose }) {
               <input
                 type="email"
                 placeholder="votremail@exemple.com"
-                {...register("email", { required: "L'email est obligatoire" })}
+                // {...register("email", { required: "L'email est obligatoire" })}
+                {...register("email", { 
+  required: "L'email est obligatoire",
+  pattern: {
+    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    message: "Format email invalide"
+  }
+})}
                 className="mt-1 w-full border border-gray-300 rounded-lg p-2"
               />
               {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
@@ -129,7 +217,14 @@ export default function QuoteModal({ isOpen, onClose }) {
               <input
                 type="tel"
                 placeholder="+213 XX XX XX XX"
-                {...register("telephone", { required: "Le téléphone est obligatoire" })}
+                // {...register("telephone", { required: "Le téléphone est obligatoire" })}
+                {...register("telephone", { 
+  required: "Le téléphone est obligatoire",
+  pattern: {
+    value: /^(0|\+213)[0-9]{9}$/,
+    message: "Téléphone invalide, doit commencer par 0 ou +213 et contenir 10 chiffres"
+  }
+})}
                 className="mt-1 w-full border border-gray-300 rounded-lg p-2"
               />
               {errors.telephone && <p className="text-red-600 text-sm">{errors.telephone.message}</p>}
@@ -243,11 +338,36 @@ export default function QuoteModal({ isOpen, onClose }) {
            />
           </div>
 
+          
+          {showCodeInput && (
+  <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
+    <h4 className="font-semibold mb-2">
+      Entrez le code reçu par email
+    </h4>
+
+    <input
+      type="text"
+      placeholder="Code à 6 chiffres"
+      value={verificationCode}
+      onChange={(e) => setVerificationCode(e.target.value)}
+      className="w-full border border-gray-300 rounded-lg p-2 mb-3"
+    />
+
+    <button
+      type="button"
+      onClick={handleVerifyCode}
+      className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
+    >
+      Vérifier le code
+    </button>
+  </div>
+)}
+
           {/* Boutons */}
           <div className="flex gap-4 pt-4 border-t">
             <button
               type="button"
-              onClick={() => { reset(); onClose(); }}
+              onClick={handleClose}
               className="flex-1 px-6 py-3 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50"
             >
               Annuler

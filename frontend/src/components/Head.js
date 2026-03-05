@@ -12,7 +12,7 @@ const Head = () => {
     { name: "Accueil", id: "accueil", path: "/" },
     { name: "À propos", id: "apropos", path: "/" },
     { name: "Services", id: "services", path: "/" },
-    { name: "Réferences pro", id: "Réferences pro", path: "/" },
+    { name: "Références pro", id: "references", path: "/" },
     // { name: "Partenaires", id: "partenaires", path: "/" },
     { name: "Blog", id: "blog", path: "/" },
     { name: "Contact", id: "contact", path: "/" },

@@ -8,6 +8,12 @@ import Header from "../components/Head";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import QuoteModal from "./QuoteModal";
+import Brandt from "../components/figma/Brandt.png";
+import Cevital from "../components/figma/Cevital.png";
+import MFG from "../components/figma/MFG.png";
+import numilog from "../components/figma/numilog.png";
+import samha from "../components/figma/samha.png";
+
 export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
  const expertises = [
   {
@@ -145,28 +151,22 @@ export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
             QUI SOMMES-NOUS ?
           </h2>
 
-          <h3 className="text-3xl md:text-4xl font-bold text-red-600 mb-6 text-center">
+          <h3 className="text-3xl md:text-4xl font-bold text-red-600 mb-7 text-center">
             Keep Contact : Votre partenaire numérique
           </h3>
 
           {/* <p className="text-gray-700 text-lg max-w-3xl mx-auto"> */}
           <p className="text-gray-700 text-lg leading-relaxed">
-            Spécialisés dans l'intégration SAP, cloud & infrastructure 
-            , centre d'appel et la cybersécurité .
+            Spécialisés dans l'intégration SAP, le cloud & l'infrastructure, les centres d'appel et la cybersécurité,
             <br></br>
-            Notre mission est vous accompagnez dans votre transformation digitale 
-            et l'optimisation de vos performances opérationnelles.
+            notre mission est de vous accompagner dans votre transformation digitale et l'optimisation de vos performances opérationnelles.
             <br></br>
-            grâce a une expertise combinée en technologies de l'information et 
-            en gestion de centres d'appel, nous vous proposons des solutions
-            intégrées adaptées  qui répondent à vos enjeux stratégique et opérationnelles.
+            Grâce à une expertise combinée en technologies de l'information et en gestion de centres d'appel, nous vous proposons des solutions intégrées adaptées, qui répondent à vos enjeux stratégiques et opérationnels.
             <br></br>
             <br></br>
             <span className="text-xl font-bold text-gray-800 ">Historique </span>
             <br></br>
-            Keep Contact, filiale du groupe Cevital fondé en 2011, fut le centre d'appel qui avait
-            pour mission d'assurer différents services dédiés aux professionnels de différents secteur
-            d'activités dans le strict respet des conditions et exigences de sa clientèle.
+            Keep Contact, filiale du groupe Cevital fondé en 2011, était un centre d'appel ayant pour mission d'assurer divers services dédiés aux professionnels de différents secteurs d'activité, dans le strict respect des conditions et exigences de sa clientèle.
          
           </p>
         </div>
@@ -245,6 +245,26 @@ export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
           </button>
         </div>
       </section>
+
+      {/* references professionnells */}
+      <section id="references" className="py-24 bg-gray-100">
+  <div className="container mx-auto px-6 text-center">
+    <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
+      Nos références professionnelles
+    </h2>
+    <p className="text-gray-700 text-lg mb-10">
+      Ils nous font confiance
+    </p>
+
+    <div className="flex flex-wrap justify-center items-center gap-12">
+      <img src={MFG} alt="MFG Mediterranean Float Glass" className="w-32 h-20 object-contain" />
+      <img src={Cevital} alt="Cevital" className="w-32 h-20 object-contain" />
+      <img src={samha} alt="Samha Home Appliance" className="w-32 h-20 object-contain" />
+      <img src={numilog} alt="Numilog" className="w-32 h-20 object-contain" />
+      <img src={Brandt} alt="Brandt" className="w-32 h-20 object-contain" />
+    </div>
+  </div>
+</section>
 
       <Footer />
 
