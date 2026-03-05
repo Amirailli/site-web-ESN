@@ -20,25 +20,25 @@ export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
     title: "Intégration SAP",
     desc: "Déploiement et personnalisation de solutions SAP.",
     icon: <Settings className="text-red-600" size={32} />,
-    link: "/services/integration-erp"
+    link: "/Services/IntegrationSAP"
   },
   {
     title: "Cloud & Infrastructure",
     desc: "Migration et gestion de cloud hybride.",
     icon: <Cloud className="text-red-600" size={32} />,
-    link: "/services/cloud"
+    link: "/Services/Cloud"
   },
   {
     title: "Cybersécurité",
     desc: "Protection et conformité aux standards internationaux.",
     icon: <Shield className="text-red-600" size={32} />,
-    link: "/services/cybersecurite"
+    link: "/Services/Cybersecurite"
   },
   {
     title: "Centre d'appel",
     desc: "Service client disponible 24/7 pour accompagner vos équipes et garantir une assistance continue.",
     icon: <Users className="text-red-600" size={32} />,
-    link: "/services/centre-appel"
+    link: "/Services/CentreAppel"
   }
 ];
 

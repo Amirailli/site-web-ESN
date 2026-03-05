@@ -16,10 +16,10 @@ function App() {
           path="/"
           element={<Accueil currentPage={currentPage} setCurrentPage={setCurrentPage} />}
         />
-        <Route path="./pages/Services/Integration-sap" element={<IntegrationSAP />} />
-        <Route path="./pages/Services/Centre-appel" element={<CentreAppel />} />
-        <Route path="./pages/Services/Cloud" element={<Cloud />} />
-        <Route path="./pages/Services/Cybersecurite" element={<Cybersecurite />} />
+        <Route path="/Services/IntegrationSAP" element={<IntegrationSAP />} />
+        <Route path="/Services/CentreAppel" element={<CentreAppel />} />
+        <Route path="/Services/Cloud" element={<Cloud />} />
+        <Route path="/Services/Cybersecurite" element={<Cybersecurite />} />
       </Routes>
     </BrowserRouter>
   );
