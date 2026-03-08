@@ -1,61 +1,60 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo1 from "./figma/logo1.png";
 import logo2 from "./figma/logo2.png";
 
 const Head = () => {
-  const [activeSection, setActiveSection] = useState("accueil");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const menuItems = [
-    { name: "Accueil", id: "accueil", path: "/" },
-    { name: "À propos", id: "apropos", path: "/" },
-    { name: "Services", id: "services", path: "/" },
-    { name: "Références pro", id: "references", path: "/" },
-    // { name: "Partenaires", id: "partenaires", path: "/" },
-    { name: "Blog", id: "blog", path: "/" },
-    { name: "Contact", id: "contact", path: "/" },
+    { name: "Accueil", id: "accueil", path: "/#accueil" },
+    { name: "À propos", id: "apropos", path: "/#apropos" },
+    { name: "Services", id: "services", path: "/#services" }, // id="services"
+    { name: "Références pro", id: "references", path: "/#references" },
+    { name: "Blog", id: "blog", path: "/#blog" },
+    { name: "Contact", id: "contact", path: "/#contact" },
   ];
 
   const handleClick = (item) => {
-   setActiveSection(item.id); // ⚡ mettre à jour le soulignement
-   if (item.path !== location.pathname) {
     navigate(item.path);
-   } else {
-    // Si on est déjà sur la page, scroller vers la section
-    const section = document.getElementById(item.id);
-    if (section) section.scrollIntoView({ behavior: "smooth" });
-   }
+    setMobileMenuOpen(false);
   };
 
+  // 🔹 Calcul dynamique du bouton actif
+  const activeSection = (() => {
+    // Page service
+    if (location.pathname.startsWith("/services")) return "services";
 
+    // Page d'accueil
+    if (location.pathname === "/") {
+      return location.hash.replace("#", "") || "accueil";
+    }
+
+    // Autres pages
+    return "";
+  })();
+
+  // 🔹 Scroll smooth si hash présent
   useEffect(() => {
-   const path = location.pathname;
-
-   const foundItem = menuItems.find((item) =>
-    path === "/" ? item.id === "accueil" : path.includes(item.id)
-   );
-
-   if (foundItem) {
-    setActiveSection(foundItem.id);
-   }
-  }, [location.pathname]);
+    if (location.pathname === "/" && location.hash) {
+      const section = document.getElementById(location.hash.replace("#", ""));
+      if (section) section.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [location]);
 
   return (
     <header className="fixed w-full z-50 bg-red-600 h-16 shadow-lg flex items-center">
-      {/* quand j'enleve le logo a droite alors je corrige ca ::::::::::::::::::::::::::::::::::::::: */}
-      {/* <div className="container mx-auto flex items-center justify-between px-8"> */}
       <div className="w-full flex items-center justify-between">
-         <div className="flex items-center gap-3 pl-20">
-           <img 
-              src={logo1} 
-              alt="Keep Contact Logo" 
-              className="h-10 w-auto"
-           />
-           <span className="font-bold text-2xl tracking-wide text-white">Keep Contact</span>
+        {/* Logo gauche */}
+        <div className="flex items-center gap-3 pl-20">
+          <img src={logo1} alt="Logo" className="h-10 w-auto" />
+          <span className="font-bold text-2xl text-white">Keep Contact</span>
         </div>
-        <nav className="hidden md:flex items-center space-x-8  ml-20">
+
+        {/* Menu desktop */}
+        <nav className="hidden md:flex items-center space-x-8 ml-20">
           {menuItems.map((item, idx) => (
             <button
               key={idx}
@@ -70,15 +69,58 @@ const Head = () => {
             </button>
           ))}
         </nav>
-        <div className="flex items-center gap-3 pr-7">
-           <img 
-              src={logo2} 
-              alt="Keep Contact Logo" 
-              className="h-12 w-auto"
-           /> 
-        </div> 
- 
+
+        {/* Hamburger + logo droit */}
+        <div className="flex items-center gap-4 pr-7">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-white"
+          >
+            <svg
+              className="w-7 h-7"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {mobileMenuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
+          <img src={logo2} alt="Logo" className="h-12 w-auto" />
+        </div>
       </div>
+
+      {/* Menu mobile */}
+      {mobileMenuOpen && (
+        <div className="absolute top-16 right-4 w-45 bg-red-600 rounded-xl shadow-xl flex flex-col items-start md:hidden space-y-4 py-4 px-5">
+          {menuItems.map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleClick(item)}
+              className={`inline-block text-sm uppercase tracking-wide font-semibold transition-all duration-300 ${
+                activeSection === item.id
+                  ? "text-white border-b-2 border-white pb-1"
+                  : "text-white hover:text-gray-200"
+              }`}
+            >
+              {item.name}
+            </button>
+          ))}
+        </div>
+      )}
     </header>
   );
 };

@@ -1,17 +1,6 @@
-import React , { useState }from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { X } from "lucide-react";
 import ReCAPTCHA from "react-google-recaptcha";
-// Accordion
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent
-} from "@radix-ui/react-accordion";
-
-// Checkbox & Label (si tu utilises shadcn/ui)
-
 
 export default function QuoteModal({ isOpen, onClose }) {
   const {
@@ -31,115 +20,122 @@ export default function QuoteModal({ isOpen, onClose }) {
   const [verificationCode, setVerificationCode] = useState("");
   const [savedEmail, setSavedEmail] = useState("");
 
+  const [feedbackMessage, setFeedbackMessage] = useState(null);
+  const [feedbackType, setFeedbackType] = useState("error"); // "success" ou "error"
+
   const validateAtLeastOne = () => {
-  const values = getValues(); // récupère toutes les valeurs du formulaire
-  if (!values.typeRequete && !values.message) {
-    return "Veuillez remplir au moins le type de demande ou le message";
-  }
-  return true;
-};
+    const values = getValues();
+    if (!values.typeRequete && !values.message) {
+      return "Veuillez remplir au moins le type de demande ou le message";
+    }
+    return true;
+  };
 
   if (!isOpen) return null;
 
- 
-  
- const onSubmit = async (data) => {
-  if (!captchaValue) {
-    alert("Veuillez confirmer que vous n'êtes pas un robot.");
-    return;
-  }
-
-  try {
-    const response = await fetch("http://127.0.0.1:8000/api/formulaire", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nomPrenom: data.nomPrenom,
-        entreprise: data.entreprise,
-        email: data.email,
-        fonction: data.fonction,
-        telephone: data.telephone,
-        typeRequete: data.typeRequete,
-        message: data.message,
-        acceptPolitique: data.acceptPolitique ? true : false,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      setShowCodeInput(true);      // 🔥 afficher champ code
-      setSavedEmail(data.email);   // 🔥 sauvegarder email
-      alert("Un code de confirmation a été envoyé à votre email.");
-    } else {
-      alert("Erreur : " + result.message);
+  const onSubmit = async (data) => {
+    if (!captchaValue) {
+      setFeedbackMessage("Veuillez confirmer que vous n'êtes pas un robot.");
+      setFeedbackType("error");
+      return;
     }
-  } catch (error) {
-    console.error("Erreur:", error);
-    alert("Une erreur est survenue.");
-  }
-};
-  
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/formulaire", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nomPrenom: data.nomPrenom,
+          entreprise: data.entreprise,
+          email: data.email,
+          fonction: data.fonction,
+          telephone: data.telephone,
+          typeRequete: data.typeRequete,
+          message: data.message,
+          acceptPolitique: data.acceptPolitique ? true : false,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setShowCodeInput(true);
+        setSavedEmail(data.email);
+        setFeedbackMessage("Un code de confirmation a été envoyé à votre email.");
+        setFeedbackType("success");
+      } else {
+        setFeedbackMessage("Erreur : " + result.message);
+        setFeedbackType("error");
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+      setFeedbackMessage("Une erreur est survenue.");
+      setFeedbackType("error");
+    }
+  };
+
   const handleVerifyCode = async () => {
-  try {
-    const response = await fetch("http://127.0.0.1:8000/api/verifier-code", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: savedEmail,
-        code: verificationCode,
-      }),
-    });
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/verifier-code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: savedEmail,
+          code: verificationCode,
+        }),
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (result.success) {
-      alert("Email confirmé avec succès !");
-      alert("Ton formulaire a ete envoyer avec succes");
-      reset();
-      setCaptchaValue(null);
-      setShowCodeInput(false);
-      setVerificationCode("");
-      onClose();
-    } else {
-      alert(result.message);
+      if (result.success) {
+        setFeedbackMessage("Email confirmé avec succès !\nTon formulaire a été envoyé avec succès.");
+        setFeedbackType("success");
+        // Reset après affichage du message
+        reset();
+        setCaptchaValue(null);
+        setShowCodeInput(false);
+        setVerificationCode("");
+        setSavedEmail("");
+      } else {
+        setFeedbackMessage(result.message);
+        setFeedbackType("error");
+      }
+    } catch (error) {
+      console.error("Erreur:", error);
+      setFeedbackMessage("Erreur lors de la vérification.");
+      setFeedbackType("error");
     }
-  } catch (error) {
-    console.error("Erreur:", error);
-    alert("Erreur lors de la vérification.");
-  }
-};
+  };
 
-const handleClose = () => {
-  reset();                // Vide tous les champs du formulaire
-  setCaptchaValue(null);   // Réinitialise le captcha
-  setShowCodeInput(false); // Cache le champ code
-  setVerificationCode(""); // Vide le code
-  setSavedEmail("");       // Vide l’email sauvegardé
-  onClose();               // Ferme le modal
-};
+  const handleClose = () => {
+    reset();
+    setCaptchaValue(null);
+    setShowCodeInput(false);
+    setVerificationCode("");
+    setSavedEmail("");
+    onClose();
+  };
 
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-start justify-center pt-10 pb-10 z-50 overflow-y-auto">
-      <div className="bg-white w-full max-w-xl max-h-[90vh] shadow-2xl rounded-lg relative flex flex-col">
+      <div className="bg-white w-[85%] sm:w-[75%] md:w-full max-w-xl max-h-[90vh] shadow-2xl rounded-lg relative flex flex-col">
         {/* Header */}
         <div className="bg-red-600 text-white px-6 py-4 flex justify-between items-center rounded-t-lg">
           <h3 className="text-lg font-bold">Demande de devis</h3>
-          <button onClick={handleClose} className="text-white text-xl font-bold hover:opacity-70">
+          <button
+            onClick={handleClose}
+            className="text-white text-xl font-bold hover:opacity-70"
+          >
             ✕
           </button>
         </div>
 
          {/* Form */}
          <form
-               onSubmit={handleSubmit(onSubmit)}
-               className="p-6 space-y-6 overflow-y-auto flex-1 scrollbar-hide"
-         >
+          onSubmit={handleSubmit(onSubmit)}
+          className="p-6 space-y-6 overflow-y-auto flex-1 scrollbar-hide"
+        >
 
           {/* Nom & Entreprise */}
          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -332,36 +328,33 @@ const handleClose = () => {
           
           
           <div className="flex justify-center">
-           <ReCAPTCHA
-               sitekey="6LfGvn4sAAAAAPkI0wC--z6W0qNweJrPJj19KbhW"
-               onChange={(value) => setCaptchaValue(value)}
-           />
+            <ReCAPTCHA
+              sitekey="6LfGvn4sAAAAAPkI0wC--z6W0qNweJrPJj19KbhW"
+              onChange={(value) => setCaptchaValue(value)}
+            />
           </div>
 
           
+          {/* Champ code si nécessaire */}
           {showCodeInput && (
-  <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
-    <h4 className="font-semibold mb-2">
-      Entrez le code reçu par email
-    </h4>
-
-    <input
-      type="text"
-      placeholder="Code à 6 chiffres"
-      value={verificationCode}
-      onChange={(e) => setVerificationCode(e.target.value)}
-      className="w-full border border-gray-300 rounded-lg p-2 mb-3"
-    />
-
-    <button
-      type="button"
-      onClick={handleVerifyCode}
-      className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
-    >
-      Vérifier le code
-    </button>
-  </div>
-)}
+            <div className="border border-blue-200 bg-blue-50 p-4 rounded-lg">
+              <h4 className="font-semibold mb-2">Entrez le code reçu par email</h4>
+              <input
+                type="text"
+                placeholder="Code à 6 chiffres"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg p-2 mb-3"
+              />
+              <button
+                type="button"
+                onClick={handleVerifyCode}
+                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
+              >
+                Vérifier le code
+              </button>
+            </div>
+          )}
 
           {/* Boutons */}
           <div className="flex gap-4 pt-4 border-t">
@@ -381,6 +374,26 @@ const handleClose = () => {
           </div>
         </form>
       </div>
+      {/* --- Carré central pour messages feedback --- */}
+      {feedbackMessage && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div
+            className={`bg-white rounded-lg p-6 max-w-sm w-[85%] text-center shadow-lg border ${
+              feedbackType === "success" ? "border-green-400" : "border-red-400"
+            }`}
+          >
+            <p className="text-gray-800 font-medium whitespace-pre-line">
+              {feedbackMessage}
+            </p>
+            <button
+              onClick={() => setFeedbackMessage(null)}
+              className="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg font-medium"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

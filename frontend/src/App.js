@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Accueil } from "./pages/Accueil";
 import IntegrationSAP from "./pages/Services/IntegrationSAP";
 import CentreAppel from "./pages/Services/CentreAppel";
-import Cloud from "./pages/Services/Cloud";
-import Cybersecurite from "./pages/Services/Cybersecurite";
+import CloudInfrastructure from "./pages/Services/CloudInfrastructure";
+import CyberSecurity from "./pages/Services/CyberSecurity";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("accueil");
@@ -18,8 +18,8 @@ function App() {
         />
         <Route path="/Services/IntegrationSAP" element={<IntegrationSAP />} />
         <Route path="/Services/CentreAppel" element={<CentreAppel />} />
-        <Route path="/Services/Cloud" element={<Cloud />} />
-        <Route path="/Services/Cybersecurite" element={<Cybersecurite />} />
+        <Route path="/Services/CloudInfrastructure" element={<CloudInfrastructure />} />
+        <Route path="/Services/CyberSecurity" element={<CyberSecurity />} />
       </Routes>
     </BrowserRouter>
   );

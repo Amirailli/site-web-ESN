@@ -13,6 +13,11 @@ import Cevital from "../components/figma/Cevital.png";
 import MFG from "../components/figma/MFG.png";
 import numilog from "../components/figma/numilog.png";
 import samha from "../components/figma/samha.png";
+import accueilimage from "../components/figma/imageaccueil.png";
+import sap from "../components/figma/SAP.png";
+import cloud from "../components/figma/cloud.png";
+import security from "../components/figma/cyber.png";
+import appel from "../components/figma/appel.png";
 
 export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
  const expertises = [
@@ -20,25 +25,29 @@ export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
     title: "Intégration SAP",
     desc: "Déploiement et personnalisation de solutions SAP.",
     icon: <Settings className="text-red-600" size={32} />,
-    link: "/Services/IntegrationSAP"
+    link: "/Services/IntegrationSAP",
+    bg:sap
   },
   {
     title: "Cloud & Infrastructure",
     desc: "Migration et gestion de cloud hybride.",
     icon: <Cloud className="text-red-600" size={32} />,
-    link: "/Services/Cloud"
+    link: "/Services/CloudInfrastructure",
+    bg:cloud
   },
   {
     title: "Cybersécurité",
     desc: "Protection et conformité aux standards internationaux.",
     icon: <Shield className="text-red-600" size={32} />,
-    link: "/Services/Cybersecurite"
+    link: "/Services/CyberSecurity",
+    bg:security
   },
   {
     title: "Centre d'appel",
     desc: "Service client disponible 24/7 pour accompagner vos équipes et garantir une assistance continue.",
     icon: <Users className="text-red-600" size={32} />,
-    link: "/Services/CentreAppel"
+    link: "/Services/CentreAppel",
+    bg:appel
   }
 ];
 
@@ -71,22 +80,22 @@ export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
       {/* Hero Section - Première image */}
       <section id="accueil" className="relative min-h-screen flex items-center justify-center pt-20">
         <div className="absolute inset-0 z-0">
-          {/* <ImageWithFallback
-            src="https://images.unsplash.com/photo-1642775196125-38a9eb496568?q=80&w=1920"
+          <img
+            src={accueilimage}
             alt="Technology Background"
             className="w-full h-full object-cover"
-          /> */}
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-red-600/70" />
         </div>
 
-        <div className="container mx-auto relative z-10">
+        <div className="container mx-auto px-6 md:px-0 relative z-10">
           <div className="max-w-3xl">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 ">
                 <span className="text-2xl md:text-3xl font-normal text-red-600 mt-4 block">
                   Transformer la complexité en avantage concurrentiel.
                   <br></br>
@@ -96,7 +105,7 @@ export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
                 </span>
               </h1>
 
-              <p className="text-gray-800 text-lg mb-5 leading-relaxed">
+              <p className="text-lg mb-5 leading-relaxed text-white">
                 
                 
                 {/* Keep Contact Intégrateur de solutions ERP, Cloud & Sécurité pour la transformation digitale, accompagne les entreprises dans l'optimisation de leurs systèmes
@@ -114,7 +123,7 @@ export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
                 évolutifs et orientés résultats.
                 <br></br>
                 <br></br>
-                <span className="text-xl font-bold text-gray-800 ">Prêt à transformer votre entreprise ?</span> 
+                <span className="text-xl font-bold text-white ">Prêt à transformer votre entreprise ?</span> 
               </p>
 
               <div className="flex flex-wrap gap-4 pb-7">
@@ -186,25 +195,38 @@ export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
          </p>
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {expertises.map((item, idx) => (
-          <div 
-          key={idx}
-          className="bg-gray-200 hover:shadow-2xl transition-all p-8 rounded-2xl border border-gray-200 flex flex-col"
-          >
-           <div className="mb-4">{item.icon}</div>
-           <h4 className="text-xl font-bold mb-4">{item.title}</h4>
-           <p className="text-gray-600 mb-6">{item.desc}</p>
-           <Link 
-            to={item.link}
-            className="mt-auto text-red-600 font-bold inline-flex items-center hover:text-red-500 transition-colors"
-           >
-            Détails du service
-            <ChevronRight className="ml-1" size={18} />
-           </Link>
-          </div>
-          ))}
-         </div>
+         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+  {expertises.map((item, idx) => (
+    <div 
+      key={idx}
+      className="bg-gray-200 hover:shadow-2xl transition-all rounded-2xl border border-gray-200 flex flex-col overflow-hidden"
+    >
+      {/* Image en haut - corrigée pour prendre toute la largeur */}
+      <div className="h-40 w-full flex-shrink-0">
+        <img 
+          src={item.bg} 
+          alt={item.title} 
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="p-6 pl-2 flex flex-col flex-1">
+        <div className="flex items-start space-x-2 pb-2 ">
+        <div className="mb-4">{item.icon}</div>
+        <h4 className="text-xl font-bold mb-4">{item.title}</h4>
+        </div>
+        <p className="text-gray-600 mb-3 ml-3">{item.desc}</p>
+        <Link 
+          to={item.link}
+          className=" pl-3 mt-auto text-red-600 font-bold inline-flex items-center hover:text-red-500 transition-colors"
+        >
+          Détails du service
+          <ChevronRight className="ml-1" size={18} />
+        </Link>
+      </div>
+    </div>
+  ))}
+</div>
 
         </div>
        </section>
@@ -225,29 +247,79 @@ export const Accueil = ({ currentPage, setCurrentPage, onOpenQuoteModal }) => {
         </div>
       </section>
 
+
       {/* CTA FINAL */}
-      <section className="py-20 bg-gray-200 border-t border-gray-200">
-        <div className="container mx-auto px-6 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            Prêt à transformer votre entreprise ?
-          </h2>
+<section className="py-20 bg-gray-200 border-t border-gray-200">
+  <div className="container mx-auto px-6 text-center max-w-5xl">
+    <h2 className="text-3xl md:text-4xl font-bold mb-8">
+      Prêt à transformer votre entreprise ?
+    </h2>
 
-          <p className="text-gray-700 text-lg mb-10">
-            Contactez nos experts pour une analyse gratuite.
-          </p>
+    <p className="text-gray-700 text-lg mb-12">
+      Contactez nos experts dès aujourd'hui pour une analyse gratuite de vos besoins et découvrez comment nous pouvons propulser votre croissance.
+    </p>
 
-          <button 
-            onClick={() => setCurrentPage("contact")}
-            className="bg-red-600 hover:bg-red-700 text-white px-10 py-4 rounded-full font-bold text-lg transition-all shadow-md inline-flex items-center"
-          >
-            Parlons de votre projet
-            <ArrowRight className="ml-3" />
-          </button>
-        </div>
-      </section>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* SAP */}
+      <div className="bg-white shadow-lg p-8 rounded-xl border-l-4 border-red-600 text-left">
+        <h3 className="text-xl font-bold mb-4 text-red-600">SAP </h3>
+        <ul className="list-disc list-inside text-gray-700 space-y-2">
+          <li>Consultants certifiés et expérimentés</li>
+          <li>Approche orientée performance</li>
+          <li>Respect des délais et des budgets</li>
+          <li>Sécurité et confidentialité des données</li>
+          <li>Support réactif et personnalisé</li>
+        </ul>
+      </div>
+
+      {/* Cloud & Infrastructure */}
+      <div className="bg-white shadow-lg p-8 rounded-xl border-l-4 border-red-600 text-left">
+        <h3 className="text-xl font-bold mb-4 text-red-600">Cloud & Infrastructure </h3>
+        <ul className="list-disc list-inside text-gray-700 space-y-2">
+          <li>Expertise technique confirmée</li>
+          <li>Approche orientée performance et sécurité</li>
+          <li>Solutions adaptées à vos besoins métiers</li>
+          <li>Respect des normes et standards internationaux</li>
+          <li>Accompagnement personnalisé</li>
+        </ul>
+      </div>
+
+      {/* CyberSecurity */}
+      <div className="bg-white shadow-lg p-8 rounded-xl border-l-4 border-red-600 text-left">
+        <h3 className="text-xl font-bold mb-4 text-red-600">CyberSecurity </h3>
+        <ul className="list-disc list-inside text-gray-700 space-y-2">
+          <li>Plan d’action adapté et priorisé</li>
+          <li>Protection des applications métiers et des données critiques</li>
+          <li>Limitation de l’impact opérationnel et financier en cas d'attaque</li>
+          <li>Structuration de la politique de sécurité</li>
+        </ul>
+      </div>
+
+      {/* Centre d'appel */}
+      <div className="bg-white shadow-lg p-8 rounded-xl border-l-4 border-red-600 text-left">
+        <h3 className="text-xl font-bold mb-4 text-red-600">Centre d'Appel</h3>
+        <ul className="list-disc list-inside text-gray-700 space-y-2">
+          <li>Traitement structuré des demandes avec respect des SLA</li>
+          <li>Intégration CRM pour traçabilité et vision unifiée</li>
+          <li>Pilotage via reporting et tableaux de bord analytiques</li>
+          <li>Supervision technique continue pour performance et sécurité</li>
+          <li>Externalisation optimisée pour réduire les coûts fixes</li>
+        </ul>
+      </div>
+    </div>
+
+    <button 
+      onClick={() => setIsQuoteModalOpen(true)}
+      className="mt-12 bg-red-600 hover:bg-red-700 text-white px-10 py-4 rounded-full font-bold text-lg transition-all shadow-md inline-flex items-center"
+    >
+      Parlons de votre projet
+      <ArrowRight className="ml-3" />
+    </button>
+  </div>
+</section>
 
       {/* references professionnells */}
-      <section id="references" className="py-24 bg-gray-100">
+      <section id="references" className="py-24 bg-white">
   <div className="container mx-auto px-6 text-center">
     <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
       Nos références professionnelles
