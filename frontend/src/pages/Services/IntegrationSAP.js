@@ -5,6 +5,85 @@ import { Server, Settings, Database, Wrench, Layers, CheckCircle } from "lucide-
 import Head from "../../components/Head";
 import Footer from "../../components/Footer";
 
+// ─── Brand tokens ─────────────────────────────────────────────────────────────
+const brand = {
+  red:       "#C0392B",
+  redHover:  "#A93226",
+  redLight:  "#FADBD8",
+  gray:      "#6D6E71",
+  grayLight: "#F2F2F2",
+  grayMid:   "#D1D1D1",
+  white:     "#FFFFFF",
+  textDark:  "#2C2C2C",
+};
+// ─────────────────────────────────────────────────────────────────────────────
+
+const services = [
+  {
+    icon: <Server color={brand.red} size={40} />,
+    title: "Implémentation SAP",
+    items: [
+      "Analyse des besoins et cadrage",
+      "Conception et paramétrage",
+      "Déploiement et mise en production",
+      "Accompagnement au changement",
+    ],
+    span: false,
+  },
+  {
+    icon: <Database color={brand.red} size={40} />,
+    title: "Migration vers SAP S/4HANA",
+    items: [
+      "Audit de l'existant",
+      "Plan de migration",
+      "Conversion technique et fonctionnelle",
+      "Tests et sécurisation des données",
+    ],
+    span: false,
+  },
+  {
+    icon: <Wrench color={brand.red} size={40} />,
+    title: "Support & Maintenance SAP",
+    items: [
+      "Support fonctionnel et technique",
+      "Correction des incidents",
+      "Optimisation des performances",
+      "Assistance évolutive",
+    ],
+    span: false,
+  },
+  {
+    icon: <Layers color={brand.red} size={40} />,
+    title: "Déploiement des modules SAP",
+    items: [
+      "Finance & contrôle de gestion",
+      "Achats & approvisionnement",
+      "Ventes & distribution",
+      "Ressources humaines",
+    ],
+    span: false,
+  },
+  {
+    icon: <Settings color={brand.red} size={40} />,
+    title: "Développement spécifique",
+    items: [
+      "Développements sur mesure",
+      "Intégration avec systèmes tiers",
+      "Automatisation des processus",
+      "Reporting & tableaux de bord",
+    ],
+    span: true,
+  },
+];
+
+const methodologie = [
+  "Diagnostic & analyse des processus",
+  "Conception adaptée à votre organisation",
+  "Paramétrage & tests",
+  "Formation des utilisateurs",
+  "Accompagnement post-déploiement",
+];
+
 const IntegrationSAP = () => {
   return (
     <>
@@ -12,218 +91,149 @@ const IntegrationSAP = () => {
 
       <div className="pt-10">
 
-        {/* HEADER */}
-        <section className="bg-red-700 py-24">
-          <div className="container mx-auto px-6 text-center text-white">
-
+        {/* ── Header ─────────────────────────────────────────────────────── */}
+        <section className="py-24" style={{ backgroundColor: brand.red }}>
+          <div className="container mx-auto px-6 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <h1
+                className="text-4xl md:text-5xl font-bold mb-6"
+                style={{ color: brand.white }}
+              >
                 Intégration SAP
               </h1>
-
-              <p className="text-xl text-red-100 max-w-3xl mx-auto">
+              <p
+                className="text-xl max-w-3xl mx-auto"
+                style={{ color: brand.redLight }}
+              >
                 Structurer, optimiser et transformer votre système
                 d'information avec des solutions SAP adaptées
                 à votre organisation.
               </p>
-
             </motion.div>
-
           </div>
         </section>
 
-
-        {/* INTRO */}
-        <section className="py-20 bg-gray-200">
+        {/* ── Intro ──────────────────────────────────────────────────────── */}
+        <section className="py-20" style={{ backgroundColor: brand.grayMid }}>
           <div className="container mx-auto px-6 max-w-5xl">
-
-            <h2 className="text-3xl font-bold mb-6 text-gray-900">
+            <h2
+              className="text-3xl font-bold mb-6"
+              style={{ color: brand.textDark }}
+            >
               Intégration SAP : structurer, optimiser, performer
             </h2>
-
-            <p className="text-gray-700 text-lg mb-6">
-              En tant qu’intégrateur SAP, nous accompagnons les entreprises
-              dans la mise en place, l’optimisation et l’évolution
-              de leurs systèmes d’information afin d’améliorer
+            <p className="text-lg mb-6" style={{ color: brand.gray }}>
+              En tant qu'intégrateur SAP, nous accompagnons les entreprises
+              dans la mise en place, l'optimisation et l'évolution
+              de leurs systèmes d'information afin d'améliorer
               leur performance opérationnelle et financière.
             </p>
-
-            <p className="text-gray-700 text-lg">
+            <p className="text-lg" style={{ color: brand.gray }}>
               Notre objectif est de transformer votre environnement SAP
               en un véritable levier stratégique pour soutenir
               votre croissance et vos décisions métiers.
             </p>
-
           </div>
         </section>
-        
-        {/* ENGAGEMENT */}
-        <section className="py-20 bg-white">
 
+        {/* ── Engagement ─────────────────────────────────────────────────── */}
+        <section className="py-20" style={{ backgroundColor: brand.grayLight }}>
           <div className="container mx-auto px-6 max-w-4xl text-center">
-
-            <h2 className="text-3xl font-bold mb-6">
+            <h2
+              className="text-3xl font-bold mb-6"
+              style={{ color: brand.textDark }}
+            >
               Notre engagement
             </h2>
-
-            <p className="text-gray-700 text-lg">
-              Nous ne nous contentons pas d’implémenter un système.
+            <p className="text-lg" style={{ color: brand.gray }}>
+              Nous ne nous contentons pas d'implémenter un système.
               Nous construisons une solution adaptée à votre métier,
               alignée avec votre stratégie et conçue pour évoluer
               avec votre croissance.
             </p>
-
           </div>
-
         </section>
 
-        {/* SERVICES */}
-        <section className="py-24 bg-gray-200">
-
+        {/* ── Services SAP ───────────────────────────────────────────────── */}
+        <section className="py-24" style={{ backgroundColor: brand.grayMid }}>
           <div className="container mx-auto px-6">
-
-            <h2 className="text-3xl font-bold text-center mb-16">
+            <h2
+              className="text-3xl font-bold text-center mb-16"
+              style={{ color: brand.textDark }}
+            >
               Nos services SAP
             </h2>
 
-            <div className="grid md:grid-cols-2  gap-10">
-
-              {/* Implementation */}
-              <div className="bg-white shadow-lg hover:shadow-2xl transition duration-300 p-8 rounded-xl border-l-4 border-red-600">
-
-                <Server className="text-red-600 mb-4" size={40} />
-
-                <h3 className="text-xl font-bold mb-4">
-                  Implémentation SAP
-                </h3>
-
-                <ul className="space-y-3 text-gray-700">
-
-                  <li className="flex gap-2"><CheckCircle size={18}/> Analyse des besoins et cadrage</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Conception et paramétrage</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Déploiement et mise en production</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Accompagnement au changement</li>
-
-                </ul>
-
-              </div>
-
-
-              {/* Migration */}
-              <div className="bg-white shadow-lg hover:shadow-2xl transition duration-300 p-8 rounded-xl border-l-4 border-red-600">
-
-                <Database className="text-red-600 mb-4" size={40} />
-
-                <h3 className="text-xl font-bold mb-4">
-                  Migration vers SAP S/4HANA
-                </h3>
-
-                <ul className="space-y-3 text-gray-700">
-
-                  <li className="flex gap-2"><CheckCircle size={18}/> Audit de l’existant</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Plan de migration</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Conversion technique et fonctionnelle</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Tests et sécurisation des données</li>
-
-                </ul>
-
-              </div>
-
-
-              {/* Support */}
-              <div className="bg-white shadow-lg hover:shadow-2xl transition duration-300 p-8 rounded-xl border-l-4 border-red-600">
-
-                <Wrench className="text-red-600 mb-4" size={40} />
-
-                <h3 className="text-xl font-bold mb-4">
-                  Support & Maintenance SAP
-                </h3>
-
-                <ul className="space-y-3 text-gray-700">
-
-                  <li className="flex gap-2"><CheckCircle size={18}/> Support fonctionnel et technique</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Correction des incidents</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Optimisation des performances</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Assistance évolutive</li>
-
-                </ul>
-
-              </div>
-
-
-              {/* Modules */}
-              <div className="bg-white shadow-lg hover:shadow-2xl transition duration-300 p-8 rounded-xl border-l-4 border-red-600">
-
-                <Layers className="text-red-600 mb-4" size={40} />
-
-                <h3 className="text-xl font-bold mb-4">
-                  Déploiement des modules SAP
-                </h3>
-
-                <ul className="space-y-3 text-gray-700">
-
-                  <li className="flex gap-2"><CheckCircle size={18}/> Finance & contrôle de gestion</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Achats & approvisionnement</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Ventes & distribution</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Ressources humaines</li>
-
-                </ul>
-
-              </div>
-
-
-              {/* Developpement */}
-              <div className="bg-white shadow-lg p-8 rounded-xl border-l-4 border-red-600 md:col-span-2 justify-self-center w-full md:w-1/2">
-
-                <Settings className="text-red-600 mb-4" size={40} />
-
-                <h3 className="text-xl font-bold mb-4">
-                  Développement spécifique
-                </h3>
-
-                <ul className="space-y-3 text-gray-700">
-
-                  <li className="flex gap-2"><CheckCircle size={18}/> Développements sur mesure</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Intégration avec systèmes tiers</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Automatisation des processus</li>
-                  <li className="flex gap-2"><CheckCircle size={18}/> Reporting & tableaux de bord</li>
-
-                </ul>
-
-              </div>
-
+            <div className="grid md:grid-cols-2 gap-10">
+              {services.map(({ icon, title, items, span }) => (
+                <div
+                  key={title}
+                  className={`shadow-lg hover:shadow-2xl transition duration-300 p-8 rounded-xl${
+                    span ? " md:col-span-2 md:w-1/2 justify-self-center w-full" : ""
+                  }`}
+                  style={{
+                    backgroundColor: brand.grayLight,
+                    borderLeft: `4px solid ${brand.red}`,
+                  }}
+                >
+                  <div className="mb-4">{icon}</div>
+                  <h3
+                    className="text-xl font-bold mb-4"
+                    style={{ color: brand.textDark }}
+                  >
+                    {title}
+                  </h3>
+                  <ul className="space-y-3">
+                    {items.map((item) => (
+                      <li
+                        key={item}
+                        className="flex gap-2"
+                        style={{ color: brand.gray }}
+                      >
+                        <CheckCircle
+                          size={18}
+                          className="flex-shrink-0 mt-0.5"
+                          color={brand.gray}
+                        />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-
           </div>
-
         </section>
 
-
-        {/* METHODOLOGIE */}
-        <section className="py-20 bg-white">
-
+        {/* ── Méthodologie ───────────────────────────────────────────────── */}
+        <section className="py-20" style={{ backgroundColor: brand.grayLight }}>
           <div className="container mx-auto px-6 max-w-4xl">
-
-            <h2 className="text-3xl font-bold mb-10 text-center">
+            <h2
+              className="text-3xl font-bold mb-10 text-center"
+              style={{ color: brand.textDark }}
+            >
               Notre méthodologie
             </h2>
 
-            <ul className=" grid md:grid-cols-2 gap-6 text-left text-lg">
-
-              <li className="flex gap-3 bg-gray-200 shadow-lg p-6 rounded-xl flex items-start space-x-3 hover:shadow-xl transition"><CheckCircle className="text-red-600 mt-1"/> Diagnostic & analyse des processus</li>
-              <li className="flex gap-3 bg-gray-200 shadow-lg p-6 rounded-xl flex items-start space-x-3 hover:shadow-xl transition"><CheckCircle className="text-red-600 mt-1"/> Conception adaptée à votre organisation</li>
-              <li className="flex gap-3 bg-gray-200 shadow-lg p-6 rounded-xl flex items-start space-x-3 hover:shadow-xl transition"><CheckCircle className="text-red-600 mt-1"/> Paramétrage & tests</li>
-              <li className="flex gap-3 bg-gray-200 shadow-lg p-6 rounded-xl flex items-start space-x-3 hover:shadow-xl transition"><CheckCircle className="text-red-600 mt-1"/> Formation des utilisateurs</li>
-              <li className="flex gap-3 bg-gray-200 shadow-lg p-6 rounded-xl flex items-start space-x-3 hover:shadow-xl transition"><CheckCircle className="text-red-600 mt-1"/> Accompagnement post-déploiement</li>
-
+            <ul className="grid md:grid-cols-2 gap-6 text-left text-lg">
+              {methodologie.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-3 shadow-lg p-6 rounded-xl items-start hover:shadow-xl transition"
+                  style={{ backgroundColor: brand.grayMid }}
+                >
+                  <CheckCircle
+                    className="mt-1 flex-shrink-0"
+                    color={brand.red}
+                  />
+                  <span style={{ color: brand.textDark }}>{item}</span>
+                </li>
+              ))}
             </ul>
-
           </div>
-
         </section>
 
       </div>

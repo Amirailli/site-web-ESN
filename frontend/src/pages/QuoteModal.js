@@ -41,7 +41,7 @@ export default function QuoteModal({ isOpen, onClose }) {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/formulaire", {
+      const response = await fetch("http://127.0.0.1/esn-project/backend/formulaire.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -76,7 +76,7 @@ export default function QuoteModal({ isOpen, onClose }) {
 
   const handleVerifyCode = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/verifier-code", {
+      const response = await fetch("http://127.0.0.1/esn-project/backend/verifier_code.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -107,6 +107,7 @@ export default function QuoteModal({ isOpen, onClose }) {
     }
   };
 
+
   const handleClose = () => {
     reset();
     setCaptchaValue(null);
@@ -122,7 +123,7 @@ export default function QuoteModal({ isOpen, onClose }) {
       <div className="bg-white w-[85%] sm:w-[75%] md:w-full max-w-xl max-h-[90vh] shadow-2xl rounded-lg relative flex flex-col">
         {/* Header */}
         <div className="bg-red-600 text-white px-6 py-4 flex justify-between items-center rounded-t-lg">
-          <h3 className="text-lg font-bold">Demande de devis</h3>
+          <h3 className="text-lg font-bold">Demande d'information</h3>
           <button
             onClick={handleClose}
             className="text-white text-xl font-bold hover:opacity-70"

@@ -6,6 +6,9 @@ import IntegrationSAP from "./pages/Services/IntegrationSAP";
 import CentreAppel from "./pages/Services/CentreAppel";
 import CloudInfrastructure from "./pages/Services/CloudInfrastructure";
 import CyberSecurity from "./pages/Services/CyberSecurity";
+import Confidentialite from "./components/Confidentialite";
+import Mentionslegales from "./components/Mentionslegales";
+import Blog from "./pages/Blog";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("accueil");
@@ -20,6 +23,9 @@ function App() {
         <Route path="/Services/CentreAppel" element={<CentreAppel />} />
         <Route path="/Services/CloudInfrastructure" element={<CloudInfrastructure />} />
         <Route path="/Services/CyberSecurity" element={<CyberSecurity />} />
+        <Route path="/Confidentialite" element={<Confidentialite />} />
+        <Route path="/Mentionslegales" element={<Mentionslegales />} />
+        <Route path="/blog" element={<Blog />} />
       </Routes>
     </BrowserRouter>
   );
